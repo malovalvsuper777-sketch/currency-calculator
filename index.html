@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Валютный калькулятор по официальным курсам Банка России">
+  <title>Валютный калькулятор | Лилия Малова</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="https://malovalvsuper777-sketch.github.io/malovafin-website/">Лилия Малова</a>
+      <span class="header-label">Финансовый инструмент</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Официальные курсы Банка России</p>
+          <h1>Калькулятор курсов валют</h1>
+          <p class="hero-copy">Проверяйте курсы на нужную дату и переводите суммы между валютами по официальному курсу ЦБ РФ.</p>
+        </div>
+        <div class="date-card">
+          <label for="rate-date">Дата курса</label>
+          <div class="date-row">
+            <input id="rate-date" type="date" aria-describedby="date-help">
+            <button id="load-rates" class="button button-gold" type="button">Показать</button>
+          </div>
+          <p id="date-help" class="date-help">Для выходных используется курс, опубликованный ЦБ РФ для выбранной даты.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="shell content-shell">
+      <div id="status" class="status" role="status" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <span id="status-text">Загружаем курсы…</span>
+      </div>
+
+      <section class="section-block" aria-labelledby="rates-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Курсы валют</p>
+            <h2 id="rates-title">Стоимость в рублях</h2>
+            <p id="actual-date" class="muted"></p>
+          </div>
+          <button id="customize-rates" class="button button-outline" type="button" aria-expanded="false" aria-controls="currency-picker">
+            Изменить валюты
+          </button>
+        </div>
+
+        <div id="currency-picker" class="currency-picker" hidden>
+          <div class="picker-heading">
+            <div>
+              <h3>Какие валюты показывать?</h3>
+              <p>Выберите нужные курсы. Выбор сохранится на этом устройстве.</p>
+            </div>
+            <button id="close-picker" class="icon-button" type="button" aria-label="Закрыть выбор валют">×</button>
+          </div>
+          <div id="currency-options" class="currency-options"></div>
+          <button id="apply-currencies" class="button button-primary" type="button">Применить</button>
+        </div>
+
+        <div id="rate-cards" class="rate-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="converter-card" aria-labelledby="converter-title">
+        <div class="converter-intro">
+          <p class="section-kicker">Конвертер</p>
+          <h2 id="converter-title">Рассчитать сумму</h2>
+          <p>Пересчёт выполняется через рубль и автоматически учитывает номинал валюты.</p>
+        </div>
+
+        <div class="converter-form">
+          <div class="field amount-field">
+            <label for="amount">Сумма</label>
+            <input id="amount" type="text" inputmode="decimal" value="100" autocomplete="off" aria-describedby="amount-error">
+            <span id="amount-error" class="field-error" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <label for="from-currency">Из валюты</label>
+            <select id="from-currency"></select>
+            <span id="from-currency-name" class="selected-currency-name"></span>
+          </div>
+
+          <div class="swap-field">
+            <span class="control-label-spacer" aria-hidden="true">&nbsp;</span>
+            <button id="swap-currencies" class="swap-button" type="button" aria-label="Поменять валюты местами" title="Поменять валюты местами">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3m3 3-3 3M17 17H6l3 3m-3-3 3-3"/></svg>
+            </button>
+          </div>
+
+          <div class="field">
+            <label for="to-currency">В валюту</label>
+            <select id="to-currency"></select>
+            <span id="to-currency-name" class="selected-currency-name"></span>
+          </div>
+        </div>
+
+        <div id="conversion-result" class="conversion-result" aria-live="polite">
+          <span class="result-label">Результат</span>
+          <strong id="result-value">—</strong>
+          <span id="result-explanation" class="result-explanation"></span>
+        </div>
+      </section>
+
+      <section class="info-strip" aria-label="Информация о расчёте">
+        <div class="info-icon" aria-hidden="true">i</div>
+        <div>
+          <h2>Как считается курс</h2>
+          <p>ЦБ РФ может указывать курс сразу за несколько единиц валюты — например, за 100 тенге. Калькулятор делит значение на номинал и считает кросс-курс через российский рубль.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <p>Лилия Малова · Финансовый директор</p>
+      <p>Источник данных: <a href="https://www.cbr-xml-daily.ru/" target="_blank" rel="noopener noreferrer">API для курсов ЦБ РФ</a></p>
+    </div>
+  </footer>
+
+  <noscript><div class="noscript">Для работы калькулятора необходимо включить JavaScript.</div></noscript>
+  <script src="currency-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
